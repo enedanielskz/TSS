@@ -1,0 +1,167 @@
+
+# You can use this file to easily send requests to your API.
+# Prerequisite: humao.rest-client Vscode plugin (already present on codespace)
+# High-level overview of REST API concepts used here: https://www.packtpub.com/en-us/learning/how-to-tutorials/what-are-rest-verbs-and-status-codes-tutorial?srsltid=AfmBOoppDqtkhRxj5BLZONRZFzRDmh6eP-xyTo6H4OuEHYuVbrg1d4Dm
+
+
+# Requests for API endpoints of the sample project:
+# @prompt id The id to find the user
+GET http://localhost:8080/users/{{id}}
+
+### All users
+GET http://localhost:8081/users
+### Hello world endpoint: get response "Hello, Stranger!"
+GET http://localhost:8080/hello-world
+
+### Hello world with a request param passed.
+# When sending the request it will ask you for the name
+# hitting enter will avoid passing the param, and do the default behaviour above
+# @prompt name The name to display in response
+GET http://localhost:8081/hello-world
+    ?name={{name}}
+
+### Save a greeting to database
+@postGreetingId = 1001
+@userId = 0
+@postGreetingContent = Hello!
+POST http://localhost:8080/greetings
+Content-Type: application/json
+
+{
+    "id": "{{postGreetingId}}",
+    "content": "{{postGreetingContent}}"
+}
+
+### Create new user
+@firstName = new1
+@lastName = new1
+@mail = new1@gmail.com 
+@phoneNumber = 0724593885
+@password = parolamea123
+POST http://localhost:8081/users
+Content-Type: application/json
+
+{
+    "firstName": "{{firstName}}",
+    "lastName": "{{lastName}}",
+    "mail": "{{mail}}",
+    "phoneNumber": "{{phoneNumber}}",
+    "password": "{{password}}"
+}
+
+### Get all vehicles
+GET http://localhost:8081/vehicles
+
+### Add new vehicle
+@userId = 67eb8c9f354d741fa1e5c9da
+@brand = BMW
+@model = Series3
+@licensePlate = B123sMM
+POST http://localhost:8081/vehicles
+Content-Type: application/json
+
+{
+    "userId": "{{userId}}",
+    "brand": "{{brand}}",
+    "model": "{{model}}",
+    "licensePlate": "{{licensePlate}}"
+}
+
+### Update vehicle license plate
+PATCH http://localhost:8081/vehicles/GJ06CXR/B01BBB
+
+
+### Create new ride
+@driverId = 67eb8c9f354d741fa1e5c9da
+@startLocation = Bucharest
+@endLocation = Cluj-Napoca
+@departureTime = 2025-04-04T10:00:00.000Z
+@arrivalTime = 2025-04-04T12:00:00.000Z
+@seatPrice = 50
+@seatsAvailable = 3
+@carLicensePlate = B123sMM
+POST http://localhost:8081/rides
+Content-Type: application/json
+
+{
+    "driverId": "67eb8c9f354d741fa1e5c9da",
+    "startLocation": "Bucharest",
+    "endLocation": "Cluj-Napoca",
+    "departureTime": "2025-04-04T10:00:00.000Z",
+    "arrivalTime": "2025-04-04T12:00:00.000Z",
+    "seatPrice": 50,
+    "seatsAvailable": 3,
+    "carLicensePlate": "B123sMM"
+}
+
+### Get all greetings
+GET http://localhost:8081/rides
+
+### Move to IN_PROGRESS
+PATCH http://localhost:8081/rides/67d76935a086f159e0e3ad69/start?currentLocation=Cluj-Napoca
+
+### Move to COMPLETED
+PATCH http://localhost:8081/rides/67d76935a086f159e0e3ad69/complete?currentLocation=Cluj-Napoca
+
+### Move to CANCELLED
+PATCH http://localhost:8081/rides/67d60988a42dae58c46903e8/cancel?currentLocation=Cluj-Napoca
+
+### Get info for greeting with given content
+# @prompt content Greeting content to look for, defaults to "Overview"
+GET http://localhost:8080/info
+    ?title={{content}}
+
+### Add a passenger to a ride
+@rideId = 67eb8d07354d741fa1e5c9dc
+@passengerId = 67eb8b8875af7807ab93b032
+@createdAt = 2024-04-04T17:00:00.000Z
+POST http://localhost:8081/bookings
+Content-Type: application/json
+
+{
+    "rideId": "{{rideId}}",
+    "passengerId": "{{passengerId}}",
+    "createdAt": "{{createdAt}}"
+}
+
+### Get passengers for a ride
+# @prompt rideId The ID of the ride
+GET http://localhost:8081/bookings/{{rideId}}/passengers
+
+###Change status to cancelled
+# @prompt rideId The ID of the ride
+PATCH http://localhost:8081/bookings/cancel/{{rideId}}/67d88f7103fbe777e3acfe0d
+
+### Update an existing greeting
+@putGreetingId = 1001
+@putGreetingContent = Hello again!
+PUT http://localhost:8081/greetings/{{putGreetingId}}
+Content-Type: application/json
+
+{
+    "content": "{{putGreetingContent}}"
+}
+
+### Delete greeting
+@deleteGreetingId = 1001
+DELETE http://localhost:8080/greetings/{{deleteGreetingId}}
+
+### Create new review
+POST http://localhost:8081/reviews
+Content-Type: application/json
+
+{
+    "reviewerId": "67d8357ad365ce0d5a699422",
+    "reviewedId": "67d767dca086f159e0e3ad65",
+    "rideId": "67d60988a42dae58c46903e8",
+    "rating": 5,
+    "comment": "good driver"
+}
+
+###
+# @prompt id Ride id
+GET http://localhost:8081/reviews/by-ride/{{id}}
+
+###
+# @prompt id Driver id
+GET http://localhost:8081/reviews/by-driver/{{id}}
